@@ -18,6 +18,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libssl1.0 \
   zip \
   unzip \
+  ssh \
+  rsync \
   && rm -rf /var/lib/apt/lists/*
 
 RUN curl -LsS https://aka.ms/InstallAzureCLIDeb | bash \
