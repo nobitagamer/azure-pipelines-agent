@@ -23,18 +23,32 @@ jobs:
       #   with:
       #     input_string: ${{ steps.agent.outputs.release }}
 
-      # See https://github.com/marketplace/actions/fetch-latest-release
+      # # See https://github.com/marketplace/actions/fetch-latest-release
+      # - id: agent
+      #   uses: thebritican/fetch-latest-release@v2.0.0
+      #   with:
+      #     repo_path: microsoft/azure-pipelines-agent
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Parse semver string
+      #   id: semver_parser
+      #   uses: booxmedialtd/ws-action-parse-semver@v1
+      #   with:
+      #     input_string: ${{ steps.agent.outputs.tag_name }}
+
+      # See https://github.com/marketplace/actions/get-latest-github-release
       - id: agent
-        uses: thebritican/fetch-latest-release@v2.0.0
-        with:
-          repo_path: microsoft/azure-pipelines-agent
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        uses: rez0n/actions-github-release@v1.1
+        env:
+          repository: microsoft/azure-pipelines-agent
+          token: ${{ secrets.GITHUB_TOKEN }}
+          type: prerelease
 
       - name: Parse semver string
         id: semver_parser
         uses: booxmedialtd/ws-action-parse-semver@v1
         with:
-          input_string: ${{ steps.agent.outputs.tag_name }}
+          input_string: ${{ steps.agent.outputs.release }}
 
       - name: Check out the repo
         uses: actions/checkout@v2
