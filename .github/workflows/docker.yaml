@@ -12,16 +12,29 @@ jobs:
     name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
     steps:
+      # - id: agent
+      #   uses: pozetroninc/github-action-get-latest-release@v0.5.0
+      #   with:
+      #     repository: microsoft/azure-pipelines-agent
+
+      # - name: Parse semver string
+      #   id: semver_parser
+      #   uses: booxmedialtd/ws-action-parse-semver@v1
+      #   with:
+      #     input_string: ${{ steps.agent.outputs.release }}
+
+      # See https://github.com/marketplace/actions/fetch-latest-release
       - id: agent
-        uses: pozetroninc/github-action-get-latest-release@v0.5.0
+        uses: thebritican/fetch-latest-release@v2.0.0
         with:
-          repository: microsoft/azure-pipelines-agent
+          repo_path: microsoft/azure-pipelines-agent
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Parse semver string
         id: semver_parser
         uses: booxmedialtd/ws-action-parse-semver@v1
         with:
-          input_string: ${{ steps.agent.outputs.release }}
+          input_string: ${{ steps.agent.outputs.tag_name }}
 
       - name: Check out the repo
         uses: actions/checkout@v2
